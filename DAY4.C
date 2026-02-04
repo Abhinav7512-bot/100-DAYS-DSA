@@ -1,40 +1,34 @@
 #include <stdio.h>
 
 int main() {
-    int n, k, i;
+    int n, i;
     int arr[100];
-    int comparisons = 0;
-    int found = 0;
 
     
     printf("Enter number of elements: ");
     scanf("%d", &n);
 
-    
+
     printf("Enter array elements:\n");
     for(i = 0; i < n; i++) {
         scanf("%d", &arr[i]);
     }
 
-    
-    printf("Enter key to search: ");
-    scanf("%d", &k);
+    int start = 0, end = n - 1, temp;
+    while(start < end) {
+        temp = arr[start];
+        arr[start] = arr[end];
+        arr[end] = temp;
 
-    for(i = 0; i < n; i++) {
-        comparisons++;   
-        if(arr[i] == k) {
-            found = 1;
-            break;
-        }
+        start++;
+        end--;
     }
 
-   
-    if(found)
-        printf("Key found at position %d\n", i + 1);
-    else
-        printf("Key not found\n");
-
-    printf("Total comparisons = %d\n", comparisons);
+    
+    printf("Reversed array:\n");
+    for(i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
 
     return 0;
 }
