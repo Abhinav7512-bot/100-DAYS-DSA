@@ -1,0 +1,43 @@
+#include <stdio.h>
+
+int main() {
+    int m, n;
+
+    printf("Enter rows and columns: ");
+    scanf("%d %d", &m, &n);
+
+    int matrix[100][100];
+
+    printf("Enter matrix elements:\n");
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            scanf("%d", &matrix[i][j]);
+        }
+    }
+
+    
+    if (m != n) {
+        printf("Not a Symmetric Matrix\n");
+        return 0;
+    }
+
+    int symmetric = 1;
+
+    
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            if (matrix[i][j] != matrix[j][i]) {
+                symmetric = 0;
+                break;
+            }
+        }
+        if (!symmetric) break;
+    }
+
+    if (symmetric)
+        printf("Symmetric Matrix\n");
+    else
+        printf("Not a Symmetric Matrix\n");
+
+    return 0;
+}
