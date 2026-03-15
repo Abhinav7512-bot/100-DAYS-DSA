@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 struct Node
 {
@@ -34,6 +33,7 @@ int dequeue()
 
     struct Node* temp = front;
     int value = temp->data;
+
     front = front->next;
 
     if(front == NULL)
@@ -43,28 +43,33 @@ int dequeue()
     return value;
 }
 
+int isEmpty()
+{
+    return front == NULL;
+}
+
 int main()
 {
-    int N;
+    int N, x;
     scanf("%d", &N);
 
-    char op[10];
-    int value;
+    int stack[N];
+    int top = -1;
 
     for(int i = 0; i < N; i++)
     {
-        scanf("%s", op);
-
-        if(strcmp(op, "enqueue") == 0)
-        {
-            scanf("%d", &value);
-            enqueue(value);
-        }
-        else if(strcmp(op, "dequeue") == 0)
-        {
-            printf("%d\n", dequeue());
-        }
+        scanf("%d", &x);
+        enqueue(x);
     }
+
+    while(!isEmpty())
+        stack[++top] = dequeue();
+
+    while(top != -1)
+        enqueue(stack[top--]);
+
+    while(!isEmpty())
+        printf("%d ", dequeue());
 
     return 0;
 }
