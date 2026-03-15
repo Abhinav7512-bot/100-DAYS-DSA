@@ -1,51 +1,71 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-void heapify(int arr[], int n, int i)
+struct Node
 {
-    int largest = i;
-    int left = 2*i + 1;
-    int right = 2*i + 2;
+    int data;
+    struct Node* next;
+};
 
-    if(left < n && arr[left] > arr[largest])
-        largest = left;
+struct Node* front = NULL;
+struct Node* rear = NULL;
 
-    if(right < n && arr[right] > arr[largest])
-        largest = right;
+void enqueue(int x)
+{
+    struct Node* temp = (struct Node*)malloc(sizeof(struct Node));
+    temp->data = x;
+    temp->next = NULL;
 
-    if(largest != i)
+    if(rear == NULL)
     {
-        int temp = arr[i];
-        arr[i] = arr[largest];
-        arr[largest] = temp;
-
-        heapify(arr, n, largest);
+        front = rear = temp;
+        return;
     }
+
+    rear->next = temp;
+    rear = temp;
 }
 
-void heapSort(int arr[], int n)
+int dequeue()
 {
-    for(int i = n/2 - 1; i >= 0; i--)
-        heapify(arr, n, i);
+    if(front == NULL)
+        return -1;
 
-    for(int i = n-1; i > 0; i--)
-    {
-        int temp = arr[0];
-        arr[0] = arr[i];
-        arr[i] = temp;
+    struct Node* temp = front;
+    int value = temp->data;
 
-        heapify(arr, i, 0);
-    }
+    front = front->next;
+
+    if(front == NULL)
+        rear = NULL;
+
+    free(temp);
+    return value;
 }
 
 int main()
 {
-    int arr[] = {12, 11, 13, 5, 6, 7};
-    int n = sizeof(arr)/sizeof(arr[0]);
+    int N;
+    scanf("%d", &N);
 
-    heapSort(arr, n);
+    char op[20];
+    int value;
 
-    for(int i = 0; i < n; i++)
-        printf("%d ", arr[i]);
+    for(int i = 0; i < N; i++)
+    {
+        scanf("%s", op);
+
+        if(strcmp(op, "enqueue") == 0)
+        {
+            scanf("%d", &value);
+            enqueue(value);
+        }
+        else if(strcmp(op, "dequeue") == 0)
+        {
+            printf("%d\n", dequeue());
+        }
+    }
 
     return 0;
 }
