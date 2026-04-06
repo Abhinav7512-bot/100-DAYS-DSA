@@ -1,49 +1,56 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct Node {
+int visited[100];
+
+struct node {
     int data;
-    struct Node* next;
+    struct node* next;
 };
 
-struct Node* createNode(int v) {
-    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+struct node* adj[100];
+
+void addEdge(int u, int v) {
+    struct node* newNode = (struct node*)malloc(sizeof(struct node));
     newNode->data = v;
-    newNode->next = NULL;
-    return newNode;
+    newNode->next = adj[u];
+    adj[u] = newNode;
+}
+
+void dfs(int v) {
+    visited[v] = 1;
+    printf("%d ", v);
+
+    struct node* temp = adj[v];
+    while (temp != NULL) {
+        if (!visited[temp->data]) {
+            dfs(temp->data);
+        }
+        temp = temp->next;
+    }
 }
 
 int main() {
-    int n, m;
-    scanf("%d %d", &n, &m);
+    int n, e, u, v, s;
 
-    struct Node* adj[n];
+    scanf("%d", &n);
 
-    for(int i = 0; i < n; i++)
+    for (int i = 0; i < n; i++) {
         adj[i] = NULL;
+        visited[i] = 0;
+    }
 
-    for(int i = 0; i < m; i++) {
-        int u, v;
+    scanf("%d", &e);
+
+    for (int i = 0; i < e; i++) {
         scanf("%d %d", &u, &v);
-
-        struct Node* newNode = createNode(v);
-        newNode->next = adj[u];
-        adj[u] = newNode;
-
-        newNode = createNode(u);
-        newNode->next = adj[v];
-        adj[v] = newNode;
+        addEdge(u, v);
+        addEdge(v, u);
     }
 
-    for(int i = 0; i < n; i++) {
-        printf("%d: ", i);
-        struct Node* temp = adj[i];
-        while(temp) {
-            printf("%d ", temp->data);
-            temp = temp->next;
-        }
-        printf("\n");
-    }
+    scanf("%d", &s);
+
+    dfs(s);
 
     return 0;
 }
