@@ -1,26 +1,48 @@
 #include <stdio.h>
 
+int lower_bound(int arr[], int n, int x) {
+    int low = 0, high = n - 1, ans = n;
+    while (low <= high) {
+        int mid = (low + high) / 2;
+        if (arr[mid] >= x) {
+            ans = mid;
+            high = mid - 1;
+        } else {
+            low = mid + 1;
+        }
+    }
+    return ans;
+}
+
+int upper_bound(int arr[], int n, int x) {
+    int low = 0, high = n - 1, ans = n;
+    while (low <= high) {
+        int mid = (low + high) / 2;
+        if (arr[mid] > x) {
+            ans = mid;
+            high = mid - 1;
+        } else {
+            low = mid + 1;
+        }
+    }
+    return ans;
+}
+
 int main() {
     int n;
     scanf("%d", &n);
 
     int arr[n];
-
     for (int i = 0; i < n; i++)
         scanf("%d", &arr[i]);
 
-    for (int i = 0; i < n - 1; i++) {
-        for (int j = 0; j < n - i - 1; j++) {
-            if (arr[j] > arr[j + 1]) {
-                int temp = arr[j];
-                arr[j] = arr[j + 1];
-                arr[j + 1] = temp;
-            }
-        }
-    }
+    int x;
+    scanf("%d", &x);
 
-    for (int i = 0; i < n; i++)
-        printf("%d ", arr[i]);
+    int lb = lower_bound(arr, n, x);
+    int ub = upper_bound(arr, n, x);
+
+    printf("%d %d", lb, ub);
 
     return 0;
 }
